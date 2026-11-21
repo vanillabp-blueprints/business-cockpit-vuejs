@@ -9,3 +9,4 @@ Numbers come from the Claude Code session logs (main session plus the sub-agent 
 | S02 backend + Keycloak login (sub-agent only) | 48 | 96 | 180,753 | 6,549,854 | 63,099 | 1.74 |
 | S03 login and frame (sub-agent only) | 44 | 88 | 146,970 | 4,923,029 | 62,074 | 1.48 |
 | S04 task list (sub-agent only) | 64 | 130 | 216,381 | 10,050,971 | 83,322 | 2.38 |
+| S05 closed tasks and row looks (sub-agent only) | 16 | 32 | 54,830 | 933,685 | 9,067 | 0.32 |
