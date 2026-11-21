@@ -31,5 +31,7 @@
   "columns.candidateUsers": "Vorgeschlagen für",
   "columns.followUpDate": "Wiedervorlage",
   "columns.endedAt": "Beendet",
-  "list.empty": "Keine Aufgaben"
+  "list.empty": "Keine Aufgaben",
+  "list.loading": "Lädt …",
+  "list.capNotice": "Es werden nur die ersten {limit} Einträge in der aktuellen Sortierung aufgelistet. Bitte grenzen Sie die Liste mit weiteren Kriterien ein."
 }

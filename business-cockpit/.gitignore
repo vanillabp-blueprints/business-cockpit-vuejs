@@ -9,3 +9,5 @@ coverage/
 # test reports of Playwright
 playwright-report/
 test-results/
+# numbers written by the list measurement
+e2e/measurements/

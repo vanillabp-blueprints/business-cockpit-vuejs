@@ -1,15 +1,16 @@
 <template>
-  <span v-if="moment" data-testid="date-cell">
+  <hover-tooltip v-if="moment" data-testid="date-cell">
     {{ cell.shown }}
-    <v-tooltip activator="parent" location="bottom">
+    <template #tip>
       <span data-testid="date-cell-details">{{ cell.onMouseOver }}</span>
-    </v-tooltip>
-  </span>
+    </template>
+  </hover-tooltip>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useTexts } from '../i18n/texts';
+import HoverTooltip from './HoverTooltip.vue';
 
 const props = defineProps<{ moment?: string }>();
 

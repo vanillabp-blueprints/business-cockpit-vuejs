@@ -8,7 +8,7 @@
       :data-testid="`toggle-${part.screen}`"
     >
       {{ text(part.textKey) }}
-      <span class="ml-1" :data-testid="`toggle-count-${part.screen}`">{{ countInBrackets(part.count) }}</span>
+      <count-badge class="ml-1" :count="part.count" :testid="`toggle-count-${part.screen}`" />
     </v-btn>
   </v-btn-toggle>
 </template>
@@ -19,8 +19,9 @@ import { useRoute } from 'vue-router';
 import { countsOfToggle } from '../counts/counts';
 import { useTexts } from '../i18n/texts';
 import { pathOfScreen, type ScreenName } from '../router/screens';
+import CountBadge from './CountBadge.vue';
 
-const { text, language, formatNumber } = useTexts();
+const { text, language } = useTexts();
 const route = useRoute();
 
 const parts = computed(() => [
@@ -32,7 +33,4 @@ const parts = computed(() => [
 const shownList = computed<ScreenName | undefined>(() =>
   parts.value.find((part) => part.screen === route.name)?.screen,
 );
-
-// A count that is not known yet shows nothing, so no wrong number flashes by.
-const countInBrackets = (count: number | undefined) => (count === undefined ? '' : `(${formatNumber(count)})`);
 </script>

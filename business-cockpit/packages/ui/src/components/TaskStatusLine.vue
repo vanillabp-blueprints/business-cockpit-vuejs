@@ -11,7 +11,7 @@
         @mouseleave="primaryFilter === FILTER_COUNTED_ON_MOUSE_OVER && forgetCountOfClosedTasks()"
       >
         {{ text(`filters.${primaryFilter}`) }}
-        <span class="ml-1" :data-testid="`primary-filter-count-${primaryFilter}`">{{ countInBrackets(primaryFilter) }}</span>
+        <count-badge class="ml-1" :count="countOf(primaryFilter)" :testid="`primary-filter-count-${primaryFilter}`" />
       </v-btn>
     </v-btn-toggle>
   </div>
@@ -22,16 +22,15 @@ import { countOfClosedTasks, countsOfFilters, forgetCountOfClosedTasks, refreshC
 import { useTexts } from '../i18n/texts';
 import { FILTER_COUNTED_ON_MOUSE_OVER, TASK_PRIMARY_FILTERS, type TaskPrimaryFilter } from '../lists/primary-filters';
 import type { TaskListName } from '../lists/task-lists';
+import CountBadge from './CountBadge.vue';
 
 const props = defineProps<{ list: TaskListName; filter: TaskPrimaryFilter | undefined }>();
 defineEmits<{ choose: [filter: TaskPrimaryFilter] }>();
 
-const { text, formatNumber } = useTexts();
+const { text } = useTexts();
 
-function countInBrackets(primaryFilter: TaskPrimaryFilter): string {
-  const count =
-    primaryFilter === FILTER_COUNTED_ON_MOUSE_OVER ? countOfClosedTasks.value : countsOfFilters.value[props.list][primaryFilter];
-  return count === undefined ? '' : `(${formatNumber(count)})`;
+function countOf(primaryFilter: TaskPrimaryFilter): number | undefined {
+  return primaryFilter === FILTER_COUNTED_ON_MOUSE_OVER ? countOfClosedTasks.value : countsOfFilters.value[props.list][primaryFilter];
 }
 </script>
 

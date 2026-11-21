@@ -31,5 +31,7 @@
   "columns.candidateUsers": "Proposed to",
   "columns.followUpDate": "Follow-up",
   "columns.endedAt": "Ended",
-  "list.empty": "No tasks"
+  "list.empty": "No tasks",
+  "list.loading": "Loading …",
+  "list.capNotice": "Only the first {limit} entries in the current sort order are listed. Please narrow down the list with more criteria."
 }

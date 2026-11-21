@@ -46,6 +46,15 @@ const byDueDateThenCreationThenId = (first: UserTask, second: UserTask) =>
   first.createdAt.localeCompare(second.createdAt) ||
   first.id.localeCompare(second.id);
 
+// Sorting 30,000 tasks for every page would make the simulator slower than a real backend with an
+// index, and a test would then measure the simulator. The sorted order is made once per list of tasks.
+const sortedOnce = new WeakMap<UserTask[], UserTask[]>();
+
+function sortedTasksOf(tasks: UserTask[]): UserTask[] {
+  if (!sortedOnce.has(tasks)) sortedOnce.set(tasks, [...tasks].sort(byDueDateThenCreationThenId));
+  return sortedOnce.get(tasks)!;
+}
+
 export async function handleTaskLists(
   simulator: Simulator,
   request: IncomingMessage,
@@ -74,7 +83,7 @@ export async function handleTaskLists(
 
   const [, isOwnList, isCount] = TASK_LIST_PATH.exec(pathBelowBase)!;
   const initialTimestamp = url.searchParams.get('initialTimestamp') ?? new Date().toISOString();
-  const visible = simulator.state.tasks.filter((task) => !isOwnList || task.assignee?.id === userId);
+  const visible = sortedTasksOf(simulator.state.tasks).filter((task) => !isOwnList || task.assignee?.id === userId);
 
   if (request.method !== 'POST') {
     sendNothing(response, 405);
@@ -98,7 +107,7 @@ export async function handleTaskLists(
     sendJson(response, { message: "The request is not valid: 'pageSize' is missing." }, 400);
     return true;
   }
-  const matching = visible.filter((task) => matchesMode(task, mode, initialTimestamp)).sort(byDueDateThenCreationThenId);
+  const matching = visible.filter((task) => matchesMode(task, mode, initialTimestamp));
   sendJson(response, {
     serverTimestamp: initialTimestamp,
     page: {

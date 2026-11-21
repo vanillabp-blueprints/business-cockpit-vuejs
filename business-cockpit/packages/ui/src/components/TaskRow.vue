@@ -9,13 +9,15 @@
   >
     <template v-for="column in columns" :key="column.key">
       <div v-if="column.key === 'select'" class="task-cell task-cell--icon">
-        <v-checkbox-btn
-          :model-value="isSelected"
-          :aria-label="text('columns.select')"
-          density="compact"
-          data-testid="select-task"
-          @update:model-value="$emit('select', $event as boolean)"
-        />
+        <!-- A plain checkbox: a component library draws about ten elements for one, in every row. -->
+        <label class="select-task" data-testid="select-task">
+          <input
+            type="checkbox"
+            :checked="isSelected"
+            :aria-label="text('columns.select')"
+            @change="$emit('select', ($event.target as HTMLInputElement).checked)"
+          />
+        </label>
       </div>
 
       <div v-else-if="column.key === 'title'" class="task-cell">
@@ -37,14 +39,14 @@
       </div>
 
       <div v-else-if="column.key === 'candidateUsers'" class="task-cell task-cell--icon" data-testid="cell-candidateUsers">
-        <template v-if="task.candidateUsers?.length">
+        <hover-tooltip v-if="task.candidateUsers?.length" interactive>
           <v-icon :icon="task.candidateUsers.length > 1 ? mdiAccountMultiple : mdiAccount" size="small" data-testid="candidate-icon" />
-          <v-tooltip activator="parent" location="bottom" interactive>
+          <template #tip>
             <div v-for="person in task.candidateUsers" :key="person.id" data-testid="candidate-user">
               <person-name :person="person" />
             </div>
-          </v-tooltip>
-        </template>
+          </template>
+        </hover-tooltip>
       </div>
 
       <div v-else class="task-cell" :data-testid="`cell-${column.key}`">
@@ -65,6 +67,7 @@ import { gridTemplateOf, type TaskColumn } from '../lists/task-columns';
 import { pathOfTask } from '../router/screens';
 import { currentUser } from '../session/session';
 import DateCell from './DateCell.vue';
+import HoverTooltip from './HoverTooltip.vue';
 import PersonName from './PersonName.vue';
 
 const props = defineProps<{ task: UserTask; columns: TaskColumn[]; isSelected: boolean }>();
@@ -82,6 +85,11 @@ const isClaimedByCurrentUser = computed(() => props.task.assignee?.id === curren
 
 <style scoped>
 .task-row {
+  /* The list puts each row where it belongs in the whole list, see `top` of the list. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
   display: grid;
   align-items: center;
   border-bottom: 1px solid rgb(var(--v-theme-surface-variant));
@@ -116,6 +124,19 @@ const isClaimedByCurrentUser = computed(() => props.task.assignee?.id === curren
 .task-cell__note {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.select-task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.select-task input {
+  width: 18px;
+  height: 18px;
+  accent-color: rgb(var(--v-theme-primary));
 }
 .claim-bar {
   flex: none;

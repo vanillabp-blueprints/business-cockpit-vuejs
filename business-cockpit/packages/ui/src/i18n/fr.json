@@ -31,5 +31,7 @@
   "columns.candidateUsers": "Proposée à",
   "columns.followUpDate": "Suivi",
   "columns.endedAt": "Terminée",
-  "list.empty": "Aucune tâche"
+  "list.empty": "Aucune tâche",
+  "list.loading": "Chargement …",
+  "list.capNotice": "Seules les {limit} premières entrées dans l'ordre de tri actuel sont listées. Veuillez restreindre la liste avec davantage de critères."
 }

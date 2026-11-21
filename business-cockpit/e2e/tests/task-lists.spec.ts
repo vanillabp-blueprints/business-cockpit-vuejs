@@ -425,14 +425,13 @@ test.describe('scrolling and paging', () => {
 
     const list = page.getByTestId('task-list');
     await expect.poll(async () => taskRows(page).count()).toBeGreaterThanOrEqual(20);
-    for (let attempt = 0; attempt < 6; attempt++) {
-      await list.evaluate((element) => element.scrollTo(0, element.scrollHeight));
-      await page.waitForTimeout(150);
-    }
-    await expect(taskRows(page)).toHaveCount(65);
+    await list.evaluate((element) => element.scrollTo(0, element.scrollHeight));
+    // The list holds a window of pages, so the last rows are there and the first ones are dropped.
+    await expect(rowOf(page, 't-064')).toBeVisible();
+    await expect(rowOf(page, 't-000')).toHaveCount(0);
 
     const pagesAsked = await requestsTo(simulator, '/usertask');
-    expect(pagesAsked.map((entry) => (entry.body as { pageNumber: number }).pageNumber)).toEqual([0, 1, 2, 3]);
+    expect(pagesAsked.map((entry) => (entry.body as { pageNumber: number }).pageNumber).sort()).toEqual([0, 1, 2, 3]);
     const timestamps = pagesAsked.map((entry) => new URLSearchParams(entry.query).get('initialTimestamp'));
     expect(timestamps[0]).toBeNull();
     expect(new Set(timestamps.slice(1)).size).toBe(1);

@@ -71,3 +71,12 @@ Date: 2026-11-21
 Default taken: a task without `read` in the answer is unread and its row is bold; any value of `read` makes it normal.
 Why this default: the GUI API sets `read` only for a user who read the task, see gui-api.md on marking as read.
 Answer: open
+
+## ASK-010 Which heap does the check of SRCH-018 compare with after leaving the list?
+
+Story: S06
+Date: 2026-11-21
+Default taken: DOM nodes and event listeners are compared with the values before the list opened (within 10 %, they match exactly). The heap is compared with the value after the first time the user left the list, and the first visit may add at most 5 MB.
+Why this default: the heap before the first visit lacks the code the browser compiles for the list (4.4 MB before, 7.0 MB after, the same on every later visit). No row owns it, so it cannot be freed.
+Answer: open
+
