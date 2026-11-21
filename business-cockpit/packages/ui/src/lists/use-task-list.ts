@@ -2,6 +2,7 @@ import { computed, ref, shallowRef } from 'vue';
 import type { UserTask, UserTasks } from '../generated/official-gui-api/types.gen';
 import { rememberTotalOfList } from '../counts/counts';
 import { MAX_PAGE_REQUESTS_AT_ONCE, PAGE_SIZE, PAGES_AHEAD, PAUSE_BEFORE_LOADING_MS } from './list-constants';
+import type { ListRequestPart } from './list-query';
 import { MAX_LIST_ENTRIES } from './max-list-entries';
 import { createPageRequestQueue } from './page-request-queue';
 import {
@@ -51,6 +52,8 @@ export function useTaskList(list: TaskListName, overrides: Partial<TaskListOptio
   };
   const queue = createPageRequestQueue<UserTasks>(options.maxRequestsAtOnce);
   const filter = ref<TaskPrimaryFilter>();
+  // The search and the sort of the rows shown. Every page of one start asks with the same.
+  let searchAndSort: ListRequestPart = {};
   // Only the pages in the window. A page is a plain array that nothing else points at.
   const pages = shallowRef(new Map<number, UserTask[]>());
   // Rows that a live update put above the rows of the server. The page numbers do not count them.
@@ -108,16 +111,18 @@ export function useTaskList(list: TaskListName, overrides: Partial<TaskListOptio
   function askForPage(pageNumber: number): void {
     const askedFor = generation;
     const askedFilter = filter.value!;
+    const askedSearchAndSort = searchAndSort;
     queue.ask({
       key: `${askedFor}:${pageNumber}`,
-      load: () => options.loadPage(list, askedFilter, pageNumber, timestampOfFirstPage),
+      load: () => options.loadPage(list, askedFilter, pageNumber, timestampOfFirstPage, askedSearchAndSort),
       onLoaded: (answer) => {
         if (askedFor !== generation) return;
         const isFirstPage = !hasLoadedFirstPage.value;
         if (isFirstPage) {
           timestampOfFirstPage = answer.serverTimestamp;
           hasLoadedFirstPage.value = true;
-          rememberTotalOfList(list, askedFilter, answer.page.totalElements);
+          // The counts of the toggle and of the filters are the ones of the whole list. A search narrows the total.
+          if (!askedSearchAndSort.searchQueries) rememberTotalOfList(list, askedFilter, answer.page.totalElements);
         }
         totalElements.value = answer.page.totalElements;
         // The user may have scrolled on while the page was on its way. Then nobody needs it.
@@ -170,9 +175,13 @@ export function useTaskList(list: TaskListName, overrides: Partial<TaskListOptio
     rowsToDraw,
     heldPages,
 
-    /** Starts the list again with a primary filter: other rows, a new timestamp, no old requests. */
-    showWith(primaryFilter: TaskPrimaryFilter): void {
+    /**
+     * Starts the list again with a primary filter, a search and a sort: other rows, a new
+     * timestamp, no old requests.
+     */
+    showWith(primaryFilter: TaskPrimaryFilter, search: ListRequestPart = {}): void {
       generation++;
+      searchAndSort = search;
       forgetPauseTimer();
       queue.dropWaitingRequests();
       filter.value = primaryFilter;

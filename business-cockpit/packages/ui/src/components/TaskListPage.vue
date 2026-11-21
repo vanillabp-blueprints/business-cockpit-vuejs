@@ -1,6 +1,14 @@
 <template>
   <div class="task-list-page" data-testid="task-list-page" :data-list="list">
-    <task-status-line :list="list" :filter="taskList.filter.value" @choose="chooseFilter" />
+    <div class="task-list-page__top">
+      <task-status-line :list="list" :filter="taskList.filter.value" @choose="chooseFilter" />
+      <list-search-bar
+        :query="query"
+        :load-suggestions="suggestWordsFor"
+        @search="listQuery.searchFor"
+        @reset="listQuery.resetSearchAndFilters"
+      />
+    </div>
 
     <!-- Its room is there always, so the list does not move when the sign goes away. -->
     <div class="task-list-page__loading">
@@ -12,7 +20,17 @@
         <div class="task-list__header" :style="{ gridTemplateColumns: gridTemplate }" data-testid="task-list-header">
           <div v-for="column in columns" :key="column.key" class="task-list__heading" :data-column="column.key" :data-path="column.pathFor(language)">
             <v-icon v-if="column.key === 'candidateUsers'" :icon="mdiAccountMultiple" size="small" :aria-label="text(column.headingKey)" />
-            <span v-else-if="column.key !== 'select'">{{ text(column.headingKey) }}</span>
+            <column-heading
+              v-else-if="column.key !== 'select'"
+              :column-key="column.key"
+              :name="text(column.headingKey)"
+              :sortable="column.sortable"
+              :filterable="column.filterable"
+              :sort="query.sort"
+              :filter-term="query.filterOfColumn[column.key] ?? ''"
+              @sort="listQuery.sortBy(column.key)"
+              @filter="listQuery.filterColumn(column.key, $event)"
+            />
           </div>
         </div>
 
@@ -61,10 +79,15 @@ import { useTexts } from '../i18n/texts';
 import { HEADER_HEIGHT_PX, ROW_HEIGHT_PX } from '../lists/list-constants';
 import { MAX_LIST_ENTRIES } from '../lists/max-list-entries';
 import { choosePrimaryFilter, loadPrimaryFilterChoice } from '../lists/primary-filter-choice';
-import type { TaskPrimaryFilter } from '../lists/primary-filters';
+import { DEFAULT_TASK_PRIMARY_FILTER, type TaskPrimaryFilter } from '../lists/primary-filters';
+import { requestPartOf } from '../lists/list-query';
+import { loadSuggestionsForTasks } from '../lists/task-list-api';
+import { useListQuery } from '../lists/use-list-query';
 import { columnsShownFor, gridTemplateOf } from '../lists/task-columns';
 import type { TaskListName } from '../lists/task-lists';
 import { useTaskList } from '../lists/use-task-list';
+import ColumnHeading from './ColumnHeading.vue';
+import ListSearchBar from './ListSearchBar.vue';
 import TaskRow from './TaskRow.vue';
 import TaskStatusLine from './TaskStatusLine.vue';
 
@@ -75,6 +98,9 @@ const { text, language, formatNumber } = useTexts();
 const taskList = useTaskList(props.list);
 const scroller = ref<HTMLElement>();
 const selectedIds = ref(new Set<string>());
+
+const listQuery = useListQuery();
+const query = listQuery.query;
 
 const columns = computed(() => columnsShownFor(taskList.filter.value ?? 'OpenTasksWithoutFollowUp'));
 const gridTemplate = computed(() => gridTemplateOf(columns.value));
@@ -89,12 +115,30 @@ function selectTask(taskId: string, isSelected: boolean): void {
   selectedIds.value = selection;
 }
 
+// The columns of the primary filter decide which sort and which column filters still count.
+const searchAndSort = (filter: TaskPrimaryFilter) => requestPartOf(query.value, columnsShownFor(filter), language.value);
+
+/** Shows the list from its first row again, for a new primary filter, a new search or a new sort. */
+function showFromTheStart(filter: TaskPrimaryFilter): void {
+  selectedIds.value = new Set();
+  if (scroller.value) scroller.value.scrollTop = 0;
+  taskList.showWith(filter, searchAndSort(filter));
+}
+
 function chooseFilter(filter: TaskPrimaryFilter): void {
   if (filter === taskList.filter.value) return;
   choosePrimaryFilter(props.list, filter);
-  selectedIds.value = new Set();
-  if (scroller.value) scroller.value.scrollTop = 0;
-  taskList.showWith(filter);
+  showFromTheStart(filter);
+}
+
+watch(query, () => {
+  if (taskList.filter.value) showFromTheStart(taskList.filter.value);
+});
+
+/** The suggestions keep to the filters of the columns. The full-text search itself is what the user is still typing. */
+function suggestWordsFor(input: string): Promise<string[]> {
+  const conditionsOfColumns = (searchAndSort(taskList.filter.value ?? DEFAULT_TASK_PRIMARY_FILTER).searchQueries ?? []).filter((condition) => condition.path);
+  return loadSuggestionsForTasks(props.list, input, conditionsOfColumns);
 }
 
 /**
@@ -118,7 +162,8 @@ onMounted(async () => {
   watchesSize = new ResizeObserver(tellWhichRowsAreVisible);
   watchesSize.observe(scroller.value!);
   tellWhichRowsAreVisible();
-  taskList.showWith(await loadPrimaryFilterChoice(props.list));
+  const filter = await loadPrimaryFilterChoice(props.list);
+  taskList.showWith(filter, searchAndSort(filter));
   refreshAllCounts();
 });
 
@@ -130,6 +175,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.task-list-page__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
 .task-list-page {
   display: flex;
   flex-direction: column;

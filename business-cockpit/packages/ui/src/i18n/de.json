@@ -33,5 +33,12 @@
   "columns.endedAt": "Beendet",
   "list.empty": "Keine Aufgaben",
   "list.loading": "Lädt …",
-  "list.capNotice": "Es werden nur die ersten {limit} Einträge in der aktuellen Sortierung aufgelistet. Bitte grenzen Sie die Liste mit weiteren Kriterien ein."
+  "list.capNotice": "Es werden nur die ersten {limit} Einträge in der aktuellen Sortierung aufgelistet. Bitte grenzen Sie die Liste mit weiteren Kriterien ein.",
+  "search.placeholder": "Suchen",
+  "search.clear": "Suche löschen",
+  "search.reset": "Zurücksetzen",
+  "filter.open": "Filter für {column}",
+  "filter.label": "{column} enthält",
+  "filter.clear": "Filter entfernen",
+  "sort.by": "Nach {column} sortieren"
 }

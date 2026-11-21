@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type {
   Count,
+  KwicRequest,
   UserTask,
   UserTaskCountsRequest,
   UserTaskRetrieveMode,
@@ -8,6 +9,7 @@ import type {
 } from '../../packages/ui/src/generated/official-gui-api/types.gen.ts';
 import { readBody, sendJson, sendNothing } from './http.ts';
 import type { Simulator } from './state.ts';
+import { matchesAllSearches, sortedBy, suggestionsFor } from './task-query.ts';
 
 /** The three base paths of the cockpit answer the same endpoints. /current-user shows only what is assigned to the user. */
 const TASK_LIST_PATH = /^(\/current-user)?\/usertask(\/count)?$/;
@@ -85,6 +87,13 @@ export async function handleTaskLists(
   const initialTimestamp = url.searchParams.get('initialTimestamp') ?? new Date().toISOString();
   const visible = sortedTasksOf(simulator.state.tasks).filter((task) => !isOwnList || task.assignee?.id === userId);
 
+  if (request.method === 'OPTIONS') {
+    // The suggestions of a search field: only open tasks, within the conditions already set.
+    const { searchQueries } = body as KwicRequest;
+    const open = visible.filter((task) => matchesMode(task, 'OpenTasksWithFollowUp', initialTimestamp) && matchesAllSearches(task, searchQueries));
+    sendJson(response, { result: suggestionsFor(open, url.searchParams.get('query') ?? '') });
+    return true;
+  }
   if (request.method !== 'POST') {
     sendNothing(response, 405);
     return true;
@@ -96,18 +105,22 @@ export async function handleTaskLists(
       serverTimestamp: initialTimestamp,
       counts: filters.map((filter): Count => ({
         key: filter.key,
-        count: visible.filter((task) => matchesMode(task, filter.mode, initialTimestamp)).length,
+        count: visible.filter((task) => matchesMode(task, filter.mode, initialTimestamp) && matchesAllSearches(task, filter.searchQueries)).length,
       })),
     });
     return true;
   }
 
-  const { pageNumber = 0, pageSize, mode } = body as UserTasksRequest;
+  const { pageNumber = 0, pageSize, mode, searchQueries, sort, sortAscending } = body as UserTasksRequest;
   if (!pageSize || pageSize < 1 || pageNumber < 0) {
     sendJson(response, { message: "The request is not valid: 'pageSize' is missing." }, 400);
     return true;
   }
-  const matching = visible.filter((task) => matchesMode(task, mode, initialTimestamp));
+  const matching = sortedBy(
+    visible.filter((task) => matchesMode(task, mode, initialTimestamp) && matchesAllSearches(task, searchQueries)),
+    sort,
+    sortAscending,
+  );
   sendJson(response, {
     serverTimestamp: initialTimestamp,
     page: {

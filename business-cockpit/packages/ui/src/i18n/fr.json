@@ -33,5 +33,12 @@
   "columns.endedAt": "Terminée",
   "list.empty": "Aucune tâche",
   "list.loading": "Chargement …",
-  "list.capNotice": "Seules les {limit} premières entrées dans l'ordre de tri actuel sont listées. Veuillez restreindre la liste avec davantage de critères."
+  "list.capNotice": "Seules les {limit} premières entrées dans l'ordre de tri actuel sont listées. Veuillez restreindre la liste avec davantage de critères.",
+  "search.placeholder": "Rechercher",
+  "search.clear": "Effacer la recherche",
+  "search.reset": "Réinitialiser",
+  "filter.open": "Filtrer {column}",
+  "filter.label": "{column} contient",
+  "filter.clear": "Retirer le filtre",
+  "sort.by": "Trier par {column}"
 }

@@ -33,5 +33,12 @@
   "columns.endedAt": "Ended",
   "list.empty": "No tasks",
   "list.loading": "Loading …",
-  "list.capNotice": "Only the first {limit} entries in the current sort order are listed. Please narrow down the list with more criteria."
+  "list.capNotice": "Only the first {limit} entries in the current sort order are listed. Please narrow down the list with more criteria.",
+  "search.placeholder": "Search",
+  "search.clear": "Clear search",
+  "search.reset": "Reset",
+  "filter.open": "Filter {column}",
+  "filter.label": "{column} contains",
+  "filter.clear": "Remove filter",
+  "sort.by": "Sort by {column}"
 }
