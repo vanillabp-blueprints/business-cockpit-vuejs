@@ -53,3 +53,34 @@ export function formatDateTime(language: string, moment: Date | string): string 
   }
   return dateTimeFormatters.get(language)!.format(new Date(moment));
 }
+
+const dateFormatters = new Map<string, Intl.DateTimeFormat>();
+const timeFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function dateFormatterOf(language: string): Intl.DateTimeFormat {
+  if (!dateFormatters.has(language)) dateFormatters.set(language, new Intl.DateTimeFormat(language, { dateStyle: 'medium' }));
+  return dateFormatters.get(language)!;
+}
+
+function timeFormatterOf(language: string): Intl.DateTimeFormat {
+  if (!timeFormatters.has(language)) timeFormatters.set(language, new Intl.DateTimeFormat(language, { timeStyle: 'short' }));
+  return timeFormatters.get(language)!;
+}
+
+/** The localised date, a space and the localised time. It never shows the `T` of the ISO 8601 value. */
+export function formatDateAndTime(language: string, moment: Date | string): string {
+  return `${dateFormatterOf(language).format(new Date(moment))} ${timeFormatterOf(language).format(new Date(moment))}`;
+}
+
+const isSameDay = (first: Date, second: Date) =>
+  first.getFullYear() === second.getFullYear() && first.getMonth() === second.getMonth() && first.getDate() === second.getDate();
+
+/**
+ * What a date cell of a list shows: the date, or the time when the date is today. The other one is
+ * on mouse-over, together with the part that is shown, so the tooltip reads as a whole date.
+ */
+export function dateCellOf(language: string, moment: Date | string, now: Date = new Date()): { shown: string; onMouseOver: string } {
+  const date = new Date(moment);
+  const shown = isSameDay(date, now) ? timeFormatterOf(language).format(date) : dateFormatterOf(language).format(date);
+  return { shown, onMouseOver: formatDateAndTime(language, date) };
+}

@@ -39,3 +39,35 @@ Date: 2026-11-21
 Default taken: when current-user has no user, or a request answers 401, the user interface sends the browser to `/oauth2/authorization/keycloak`. The backend does not know the address the user came from, so after the login the user lands on the start page. A first visit to a deep link is not affected, because the backend saves that request itself.
 Why this default: it is the plain contract of the description, and it commits to nothing.
 Answer: open
+
+## ASK-006 What does the start page show before the dashboard exists?
+
+Story: S04
+Date: 2026-11-21
+Default taken: `/` redirects to the task list in the language of the viewer (`/aufgaben`), because the dashboard is a later story.
+Why this default: the interview wants the dashboard as the start page, so the redirect is a stop-gap with no commitment.
+Answer: open
+
+## ASK-007 Which paths do the translated screens have?
+
+Story: S04
+Date: 2026-11-21
+Default taken: tasks `/aufgaben` `/tasks` `/taches`; my tasks `/meine-aufgaben` `/my-tasks` `/mes-taches`; a task `/aufgaben/:id` `/tasks/:id` `/taches/:id`; cases `/faelle` `/workflows` `/dossiers`. All are registered, so each opens its screen in every language. The case list and the task page are routes with no content until their stories.
+Why this default: `Q-ROUTES` asks for translated paths and names no words; the English ones are the proposal of the description.
+Answer: open
+
+## ASK-008 How are the scroll bars of the list reserved when the browser of the tests hides them?
+
+Story: S04
+Date: 2026-11-21
+Default taken: the list has `overflow: scroll` in both directions, so the room is there always. The test proves the computed style and that the inner size does not change while the list loads, because the headless browser has no visible scroll bars to measure.
+Why this default: nothing in the description names a stricter proof.
+Answer: open
+
+## ASK-009 Does the `read` timestamp of a task decide the bold row?
+
+Story: S04
+Date: 2026-11-21
+Default taken: a task without `read` in the answer is unread and its row is bold; any value of `read` makes it normal.
+Why this default: the GUI API sets `read` only for a user who read the task, see gui-api.md on marking as read.
+Answer: open

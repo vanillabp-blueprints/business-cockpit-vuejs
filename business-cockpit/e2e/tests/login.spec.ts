@@ -54,6 +54,8 @@ test('AUTH-005 the interface has no login form, no user management and no rights
 test('AUTH-006 the interface asks nothing in the background to stay logged in', async ({ page, simulator }) => {
   await page.clock.install();
   await logInAs(page);
+  // After the frame stands, the list of the start page still loads its rows and counts. That is the start of the page, not a keep-alive.
+  await page.waitForLoadState('networkidle');
   // The files of the bundle may still arrive late, for example the icon. They are no sign of a keep-alive.
   const questionsOfThePage = async () => (await simulator.requests()).filter((entry) => !entry.path.startsWith('/assets/'));
   const requestsAfterStart = await questionsOfThePage();

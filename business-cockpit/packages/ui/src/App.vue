@@ -4,7 +4,12 @@
     <template v-if="currentUser">
       <app-header @open-menu="isMenuOpen = true" />
       <navigation-menu v-model="isMenuOpen" />
-      <v-main />
+      <v-main>
+        <!-- The key makes a list of another route start from scratch instead of reusing the page. -->
+        <router-view v-slot="{ Component, route }">
+          <component :is="Component" :key="String(route.name)" />
+        </router-view>
+      </v-main>
     </template>
   </v-app>
 </template>

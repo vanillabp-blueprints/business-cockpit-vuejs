@@ -1,5 +1,5 @@
 import type { AppInformation, GroupHierarchyOfUser } from '../../packages/ui/src/generated/cockpit-gui-api/types.gen.ts';
-import type { User } from '../../packages/ui/src/generated/official-gui-api/types.gen.ts';
+import type { User, UserTask } from '../../packages/ui/src/generated/official-gui-api/types.gen.ts';
 
 /** What a test can change about the simulated cockpit. Everything lives in memory only. */
 export interface SimulatorState {
@@ -9,6 +9,12 @@ export interface SimulatorState {
   shellIsOpen: boolean;
   /** The settings of each user, by user id and then by key. */
   settings: Record<string, Record<string, unknown>>;
+  /** Every user task the simulated cockpit knows. A user sees all of them in /tasks and those assigned to the user in /my-tasks. */
+  tasks: UserTask[];
+  /** The count of the cases in progress. The case list itself comes with a later story. */
+  casesInProgress: number;
+  /** How long the task lists wait before they answer, so a test can look at the list while it loads. */
+  taskListDelayMs: number;
 }
 
 export interface SimulatedUser {
@@ -20,6 +26,9 @@ export interface SimulatedUser {
 export interface RequestLogEntry {
   method: string;
   path: string;
+  /** The query string and the body of a request to a task list, so a test can see what was asked for. */
+  query?: string;
+  body?: unknown;
 }
 
 export const clerk: SimulatedUser = {
@@ -56,6 +65,9 @@ export function initialState(): SimulatorState {
     users: [structuredClone(clerk)],
     shellIsOpen: false,
     settings: {},
+    tasks: [],
+    casesInProgress: 0,
+    taskListDelayMs: 0,
   };
 }
 

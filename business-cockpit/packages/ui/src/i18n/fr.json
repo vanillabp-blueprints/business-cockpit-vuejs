@@ -17,5 +17,19 @@
   "rights.column.givenBy": "Attribué par",
   "rights.kind.role": "Rôle",
   "rights.kind.right": "Droit",
-  "rights.givenBy.organisation": "Organisation"
+  "rights.givenBy.organisation": "Organisation",
+  "filters.OpenTasksWithFollowUp": "Toutes ouvertes",
+  "filters.OpenTasksWithoutFollowUp": "Ouvertes",
+  "filters.OpenTaskOnlyFollowUp": "Suivi",
+  "filters.ClosedTasksOnly": "Terminées",
+  "columns.select": "Sélectionner",
+  "columns.caseKind": "Type de dossier",
+  "columns.title": "Titre",
+  "columns.dueDate": "Échéance",
+  "columns.note": "Note",
+  "columns.assignee": "Responsable",
+  "columns.candidateUsers": "Proposée à",
+  "columns.followUpDate": "Suivi",
+  "columns.endedAt": "Terminée",
+  "list.empty": "Aucune tâche"
 }

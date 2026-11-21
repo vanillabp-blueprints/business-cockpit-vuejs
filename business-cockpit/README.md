@@ -14,7 +14,7 @@ The repository needs Node 24 or newer and no Java, Maven or Gradle.
 | `packages/bc-module-kit` | `@example/bc-module-kit`: what a workflow module installs (for now it passes on the types) |
 | `packages/bc-module-host` | `@example/bc-module-host`: the cockpit's side of loading module parts (not built yet) |
 | `packages/bc-theme` | `@example/bc-theme`: colours, fonts, logo and spacing as CSS custom properties and plain values |
-| `packages/ui` | the user interface |
+| `packages/ui` | the user interface; `src/lists` (task list, columns, page queue), `src/counts`, `src/settings`, `src/router` |
 | `e2e/simulator`, `e2e/tests` | the simulator that stands in for the backend, and the Playwright tests |
 | `e2e/compare` | the tests that compare a part in the cockpit and in a dev shell (nothing to compare yet) |
 | `scripts/` | loading the OpenAPI files, setting one version everywhere |

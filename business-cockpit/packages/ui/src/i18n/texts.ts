@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import de from './de.json';
 import en from './en.json';
 import fr from './fr.json';
-import { createTexts, formatDateTime, formatNumber, type TextFile } from './translation';
+import { createTexts, dateCellOf, formatDateAndTime, formatDateTime, formatNumber, pickTranslation, type TextFile } from './translation';
 
 export const DEFAULT_LANGUAGE = 'de';
 
@@ -25,5 +25,10 @@ export function useTexts() {
     languageName: (languageCode: string) => texts.text('language.name', languageCode),
     formatNumber: (number: number) => formatNumber(language.value, number),
     formatDateTime: (moment: Date | string) => formatDateTime(language.value, moment),
+    formatDateAndTime: (moment: Date | string) => formatDateAndTime(language.value, moment),
+    dateCellOf: (moment: Date | string) => dateCellOf(language.value, moment),
+    // A text of a workflow module comes in many languages. The user reads the one of the chosen language.
+    translated: (translations: Record<string, string> | undefined) =>
+      translations ? (pickTranslation(translations, language.value, DEFAULT_LANGUAGE) ?? '') : '',
   };
 }

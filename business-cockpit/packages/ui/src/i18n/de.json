@@ -17,5 +17,19 @@
   "rights.column.givenBy": "Vergeben durch",
   "rights.kind.role": "Rolle",
   "rights.kind.right": "Recht",
-  "rights.givenBy.organisation": "Organisation"
+  "rights.givenBy.organisation": "Organisation",
+  "filters.OpenTasksWithFollowUp": "Alle offenen",
+  "filters.OpenTasksWithoutFollowUp": "Offen",
+  "filters.OpenTaskOnlyFollowUp": "Wiedervorlage",
+  "filters.ClosedTasksOnly": "Erledigt",
+  "columns.select": "Auswählen",
+  "columns.caseKind": "Fallart",
+  "columns.title": "Titel",
+  "columns.dueDate": "Fällig",
+  "columns.note": "Notiz",
+  "columns.assignee": "Bearbeiter",
+  "columns.candidateUsers": "Vorgeschlagen für",
+  "columns.followUpDate": "Wiedervorlage",
+  "columns.endedAt": "Beendet",
+  "list.empty": "Keine Aufgaben"
 }

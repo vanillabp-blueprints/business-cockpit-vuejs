@@ -4,7 +4,9 @@
   "private": true,
   "description": "The cockpit user interface, a Vue single-page application",
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "generate": "openapi-ts",
     "prebuild": "npm run generate && node ../../scripts/check-texts.mjs",
@@ -16,7 +18,9 @@
     "@example/bc-module-host": "0.1.0-SNAPSHOT",
     "@example/bc-module-kit": "0.1.0-SNAPSHOT",
     "@example/bc-theme": "0.1.0-SNAPSHOT",
+    "@mdi/js": "7.4.47",
     "vue": "3.5.46",
+    "vue-router": "4.6.4",
     "vuetify": "4.3.4"
   },
   "devDependencies": {

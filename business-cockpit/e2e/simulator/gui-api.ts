@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { cookiesOf, readBody, sendJson, sendNothing } from './http.ts';
 import { SESSION_COOKIE } from './login.ts';
 import type { Simulator } from './state.ts';
+import { handleTaskLists, isTaskListPath } from './tasks.ts';
 
 export const GUI_API_BASE_PATH = '/gui/api/v1';
 
@@ -27,12 +28,15 @@ export async function handleGuiApi(
     return true;
   }
 
-  const isKnown = pathBelowBase === '/app/current-user/group-hierarchy' || SETTINGS_PATH.test(pathBelowBase);
+  const isKnown =
+    pathBelowBase === '/app/current-user/group-hierarchy' || SETTINGS_PATH.test(pathBelowBase) || isTaskListPath(pathBelowBase);
   if (!isKnown) return false;
   if (!loggedIn) {
     sendNothing(response, 401);
     return true;
   }
+
+  if (isTaskListPath(pathBelowBase)) return handleTaskLists(simulator, request, response, pathBelowBase, loggedIn.user.id);
 
   if (pathBelowBase === '/app/current-user/group-hierarchy') {
     sendJson(response, loggedIn.groupHierarchy);

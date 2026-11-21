@@ -1,5 +1,6 @@
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { lightTheme, darkTheme, type ThemeValues } from '@example/bc-theme';
 
 function vuetifyColorsOf(theme: ThemeValues) {
@@ -15,6 +16,8 @@ function vuetifyColorsOf(theme: ThemeValues) {
 }
 
 export const vuetify = createVuetify({
+  // Icons are SVG paths of @mdi/js, so no font file is loaded.
+  icons: { defaultSet: 'mdi', aliases, sets: { mdi } },
   theme: {
     // Follows the system setting, like the CSS of the theme library.
     defaultTheme: 'system',

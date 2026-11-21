@@ -17,5 +17,19 @@
   "rights.column.givenBy": "Given by",
   "rights.kind.role": "Role",
   "rights.kind.right": "Right",
-  "rights.givenBy.organisation": "Organisation"
+  "rights.givenBy.organisation": "Organisation",
+  "filters.OpenTasksWithFollowUp": "All open",
+  "filters.OpenTasksWithoutFollowUp": "Open",
+  "filters.OpenTaskOnlyFollowUp": "Follow-up",
+  "filters.ClosedTasksOnly": "Closed",
+  "columns.select": "Select",
+  "columns.caseKind": "Case kind",
+  "columns.title": "Title",
+  "columns.dueDate": "Due",
+  "columns.note": "Note",
+  "columns.assignee": "Assignee",
+  "columns.candidateUsers": "Proposed to",
+  "columns.followUpDate": "Follow-up",
+  "columns.endedAt": "Ended",
+  "list.empty": "No tasks"
 }
