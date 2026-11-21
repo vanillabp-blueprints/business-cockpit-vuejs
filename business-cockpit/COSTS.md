@@ -11,3 +11,4 @@ Numbers come from the Claude Code session logs (main session plus the sub-agent 
 | S04 task list (sub-agent only) | 64 | 130 | 216,381 | 10,050,971 | 83,322 | 2.38 |
 | S05 closed tasks and row looks (sub-agent only) | 16 | 32 | 54,830 | 933,685 | 9,067 | 0.32 |
 | S06 large lists (sub-agent only) | 53 | 112 | 572,029 | 6,945,036 | 81,372 | 2.94 |
+| S07 search, filter, sort (sub-agent only) | 38 | 80 | 291,312 | 4,287,400 | 42,656 | 1.58 |
