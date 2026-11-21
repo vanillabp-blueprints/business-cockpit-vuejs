@@ -1,10 +1,11 @@
 <template>
   <div
     class="task-row"
-    :class="{ 'task-row--unread': !task.read }"
+    :class="[`task-row--${state}`, { 'task-row--unread': !task.read }]"
     :style="{ gridTemplateColumns: gridTemplate, height: `${ROW_HEIGHT_PX}px` }"
     data-testid="task-row"
     :data-task-id="task.id"
+    :data-state="state"
   >
     <template v-for="column in columns" :key="column.key">
       <div v-if="column.key === 'select'" class="task-cell task-cell--icon">
@@ -59,6 +60,7 @@ import { mdiAccount, mdiAccountMultiple } from '@mdi/js';
 import type { UserTask } from '../generated/official-gui-api/types.gen';
 import { useTexts } from '../i18n/texts';
 import { ROW_HEIGHT_PX } from '../lists/list-constants';
+import { rowStateOf } from '../lists/row-state';
 import { gridTemplateOf, type TaskColumn } from '../lists/task-columns';
 import { pathOfTask } from '../router/screens';
 import { currentUser } from '../session/session';
@@ -73,6 +75,7 @@ const { text, language, translated } = useTexts();
 // The three date columns are the only ones that reach this branch of the template.
 const momentOf = (key: string) => (props.task as unknown as Record<string, string | undefined>)[key];
 
+const state = computed(() => rowStateOf(props.task));
 const gridTemplate = computed(() => gridTemplateOf(props.columns));
 const isClaimedByCurrentUser = computed(() => props.task.assignee?.id === currentUser.value?.id);
 </script>
@@ -82,6 +85,18 @@ const isClaimedByCurrentUser = computed(() => props.task.assignee?.id === curren
   display: grid;
   align-items: center;
   border-bottom: 1px solid rgb(var(--v-theme-surface-variant));
+}
+.task-row--completed,
+.task-row--cancelled {
+  background: var(--bc-color-row-ended);
+}
+/* Only the title is struck through, not the other cells. */
+.task-row--cancelled a {
+  text-decoration: line-through;
+}
+.task-row--suspended,
+.task-row--suspended a {
+  color: var(--bc-color-text-suspended);
 }
 .task-row--unread {
   font-weight: 700;
