@@ -19,7 +19,7 @@ export const router = createRouter({
     { path: '/', redirect: () => pathOfScreen('tasks', language.value) },
     routeOfScreen('tasks', () => import('../components/TaskListPage.vue'), { list: 'tasks' }),
     routeOfScreen('my-tasks', () => import('../components/TaskListPage.vue'), { list: 'my-tasks' }),
-    routeOfScreen('task', nothingYet),
+    routeOfScreen('task', () => import('../components/TaskPage.vue'), true),
     routeOfScreen('workflows', nothingYet),
   ],
 });

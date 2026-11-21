@@ -1,5 +1,5 @@
 import type { AppInformation, GroupHierarchyOfUser } from '../../packages/ui/src/generated/cockpit-gui-api/types.gen.ts';
-import type { User, UserTask } from '../../packages/ui/src/generated/official-gui-api/types.gen.ts';
+import type { User, UserTask, WorkflowModule } from '../../packages/ui/src/generated/official-gui-api/types.gen.ts';
 
 /** What a test can change about the simulated cockpit. Everything lives in memory only. */
 export interface SimulatorState {
@@ -15,7 +15,21 @@ export interface SimulatorState {
   casesInProgress: number;
   /** How long the task lists wait before they answer, so a test can look at the list while it loads. */
   taskListDelayMs: number;
+  /** The workflow modules GET /workflow-module lists. */
+  workflowModules: WorkflowModule[];
+  /**
+   * Modules made by a test, by module id and then by the path below /wm/<id>/. A module in this map
+   * serves these files only. Any other module id serves the built test module of that name, if there is one.
+   */
+  fakeModules: Record<string, Record<string, SimulatedFile>>;
+  /** How long GET of one user task waits before it answers, so a test can look at the page while it loads. */
+  userTaskDelayMs: number;
+  /** How many of the next requests for one user task answer 500, before they answer as usual. */
+  userTaskFailures: number;
 }
+
+/** A file of a fake module: its text, or the answer with a status, a text and a delay. */
+export type SimulatedFile = string | { body?: string; status?: number; delayMs?: number };
 
 export interface SimulatedUser {
   user: User;
@@ -68,6 +82,10 @@ export function initialState(): SimulatorState {
     tasks: [],
     casesInProgress: 0,
     taskListDelayMs: 0,
+    workflowModules: [],
+    fakeModules: {},
+    userTaskDelayMs: 0,
+    userTaskFailures: 0,
   };
 }
 

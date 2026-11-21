@@ -1,0 +1,5 @@
+*/dist/
+*/build/
+*/src/bc-build.js
+*/src/bc-build.ts
+*/.angular/

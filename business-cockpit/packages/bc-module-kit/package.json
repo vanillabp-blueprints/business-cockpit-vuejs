@@ -1,15 +1,22 @@
 {
   "name": "@example/bc-module-kit",
   "version": "0.1.0-SNAPSHOT",
-  "description": "What a workflow module installs to build its parts; for now it passes on the types and constants of bc-types",
+  "description": "What a workflow module installs to build its parts: the event protocol, defineBcElement, the names of web components, the manifest and bc-check-entries; it exports the types library again",
   "type": "module",
   "engines": { "node": ">=24" },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
-  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./check": { "types": "./dist/check.d.ts", "default": "./dist/check.js" }
+  },
+  "bin": { "bc-check-entries": "bin/bc-check-entries.js" },
+  "files": ["dist", "bin"],
   "sideEffects": false,
-  "scripts": { "build": "tsc" },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test \"test/*.test.mjs\""
+  },
   "dependencies": { "@example/bc-types": "0.1.0-SNAPSHOT" },
-  "devDependencies": { "typescript": "5.9.3" }
+  "devDependencies": { "@types/node": "24.19.2", "typescript": "5.9.3" }
 }

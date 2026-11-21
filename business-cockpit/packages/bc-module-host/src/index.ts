@@ -1,2 +1,3 @@
-// The registry and the loader of module parts come with the story that opens a user task.
-export {};
+export * from './host-errors.js';
+export * from './element-names.js';
+export * from './module-host.js';

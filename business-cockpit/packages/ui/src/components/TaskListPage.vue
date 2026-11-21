@@ -73,6 +73,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { answerWhenAskedIfListIsAlive } from '../lists/list-window-channel';
 import { mdiAccountMultiple } from '@mdi/js';
 import { refreshAllCounts, tellWhichListIsOpen } from '../counts/counts';
 import { useTexts } from '../i18n/texts';
@@ -156,6 +157,8 @@ function tellWhichRowsAreVisible(): void {
 // The first answer gives the list its length, and a resized area shows more or fewer rows.
 watch(() => taskList.hasLoadedFirstPage.value, tellWhichRowsAreVisible, { flush: 'post' });
 let watchesSize: ResizeObserver | undefined;
+
+answerWhenAskedIfListIsAlive();
 
 onMounted(async () => {
   tellWhichListIsOpen(props.list);

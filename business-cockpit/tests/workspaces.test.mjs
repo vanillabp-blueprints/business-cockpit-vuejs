@@ -23,9 +23,9 @@ test('PKG-044 the root package.json lists every workspace and the one lock file 
   }
 });
 
-test('PKG-045 the build order is types, kit, host, theme, user interface, dev shells, e2e/compare and then the UI jar', () => {
+test('PKG-045 the build order is types, kit, host, theme, user interface, dev shells, e2e/compare, the test modules and then the UI jar', () => {
   const { workspaces, scripts } = rootPackage();
-  assert.deepEqual(workspaces, [...expectedBuildOrder, 'packages/bc-dev-shell-*', 'e2e/compare']);
+  assert.deepEqual(workspaces, [...expectedBuildOrder, 'packages/bc-dev-shell-*', 'e2e/compare', 'e2e/modules/*']);
   assert.match(scripts.build, /^npm run build --workspaces --if-present && npm run build:jars/);
 });
 

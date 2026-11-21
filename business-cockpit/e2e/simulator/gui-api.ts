@@ -3,6 +3,8 @@ import { cookiesOf, readBody, sendJson, sendNothing } from './http.ts';
 import { SESSION_COOKIE } from './login.ts';
 import type { Simulator } from './state.ts';
 import { handleTaskLists, isTaskListPath } from './tasks.ts';
+import { handleUserTask, isUserTaskPath } from './user-task-page.ts';
+import { handleWorkflowModules, isWorkflowModulePath } from './workflow-modules.ts';
 
 export const GUI_API_BASE_PATH = '/gui/api/v1';
 
@@ -29,7 +31,11 @@ export async function handleGuiApi(
   }
 
   const isKnown =
-    pathBelowBase === '/app/current-user/group-hierarchy' || SETTINGS_PATH.test(pathBelowBase) || isTaskListPath(pathBelowBase);
+    pathBelowBase === '/app/current-user/group-hierarchy' ||
+    SETTINGS_PATH.test(pathBelowBase) ||
+    isTaskListPath(pathBelowBase) ||
+    isUserTaskPath(pathBelowBase) ||
+    isWorkflowModulePath(pathBelowBase);
   if (!isKnown) return false;
   if (!loggedIn) {
     sendNothing(response, 401);
@@ -37,6 +43,14 @@ export async function handleGuiApi(
   }
 
   if (isTaskListPath(pathBelowBase)) return handleTaskLists(simulator, request, response, pathBelowBase, loggedIn.user.id);
+  if (isUserTaskPath(pathBelowBase)) {
+    await handleUserTask(simulator, request, response, pathBelowBase);
+    return true;
+  }
+  if (isWorkflowModulePath(pathBelowBase)) {
+    handleWorkflowModules(simulator, request, response, pathBelowBase);
+    return true;
+  }
 
   if (pathBelowBase === '/app/current-user/group-hierarchy') {
     sendJson(response, loggedIn.groupHierarchy);

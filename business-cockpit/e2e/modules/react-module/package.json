@@ -1,0 +1,19 @@
+{
+  "name": "@example/bc-test-module-react",
+  "version": "0.1.0-SNAPSHOT",
+  "private": true,
+  "description": "A test module in React 19: user tasks of the process react-order",
+  "type": "module",
+  "workflowModuleId": "react-module",
+  "scripts": {
+    "build": "node ../build-module.mjs ."
+  },
+  "dependencies": {
+    "@example/bc-module-kit": "0.1.0-SNAPSHOT",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

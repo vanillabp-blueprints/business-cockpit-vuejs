@@ -1,0 +1,18 @@
+{
+  "name": "@example/bc-test-module-vue",
+  "version": "0.1.0-SNAPSHOT",
+  "private": true,
+  "description": "A test module in Vue 3.5: user tasks of the process vue-loan",
+  "type": "module",
+  "workflowModuleId": "vue-module",
+  "scripts": {
+    "build": "node ../build-module.mjs ."
+  },
+  "dependencies": {
+    "@example/bc-module-kit": "0.1.0-SNAPSHOT",
+    "vue": "3.5.46"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

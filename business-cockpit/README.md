@@ -11,10 +11,11 @@ The repository needs Node 24 or newer and no Java, Maven or Gradle.
 | Folder | What it holds |
 |--------|---------------|
 | `packages/bc-types` | `@example/bc-types`: the data of the GUI API (generated), the constants, `ui-uri-types.json`, the names of the theme tokens |
-| `packages/bc-module-kit` | `@example/bc-module-kit`: what a workflow module installs (for now it passes on the types) |
-| `packages/bc-module-host` | `@example/bc-module-host`: the cockpit's side of loading module parts (not built yet) |
+| `packages/bc-module-kit` | `@example/bc-module-kit`: what a workflow module installs: `defineBcElement`, the event protocol, `elementPrefix` and `createElementNames`, the manifest functions and the script `bc-check-entries`; it exports the types library again |
+| `packages/bc-module-host` | `@example/bc-module-host`: the cockpit's side of loading module parts: the registry, the one loader, ask, load and draw, the checks of names and the manifest recheck |
 | `packages/bc-theme` | `@example/bc-theme`: colours, fonts, logo and spacing as CSS custom properties and plain values |
-| `packages/ui` | the user interface; `src/lists` (task list, columns, page queue), `src/counts`, `src/settings`, `src/router` |
+| `packages/ui` | the user interface; `src/lists` (task list, columns, page queue), `src/modules` (the page of a user task and the loader of module parts), `src/counts`, `src/settings`, `src/router` |
+| `e2e/modules` | the three test modules, in React, Vue and Angular; `npm run build --workspaces` builds them, and the simulator serves them below `/wm/<module id>/` |
 | `e2e/simulator`, `e2e/tests` | the simulator that stands in for the backend, and the Playwright tests |
 | `e2e/compare` | the tests that compare a part in the cockpit and in a dev shell (nothing to compare yet) |
 | `scripts/` | loading the OpenAPI files, setting one version everywhere |

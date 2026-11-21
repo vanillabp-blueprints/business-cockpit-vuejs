@@ -21,7 +21,9 @@
       </div>
 
       <div v-else-if="column.key === 'title'" class="task-cell">
-        <router-link :to="pathOfTask(task.id, language)" data-testid="task-title">{{ translated(task.title) }}</router-link>
+        <!-- A task with a page of its own opens in a tab of its own, and the list stays where it is. -->
+        <a v-if="wayToOpen(task) === 'own-tab'" :href="addressOfTask(task)" target="_blank" rel="noopener" data-testid="task-title">{{ translated(task.title) }}</a>
+        <router-link v-else :to="pathOfTask(task.id, language)" data-testid="task-title">{{ translated(task.title) }}</router-link>
       </div>
 
       <div v-else-if="column.key === 'caseKind'" class="task-cell" data-testid="cell-caseKind">
@@ -64,6 +66,7 @@ import { useTexts } from '../i18n/texts';
 import { ROW_HEIGHT_PX } from '../lists/list-constants';
 import { rowStateOf } from '../lists/row-state';
 import { gridTemplateOf, type TaskColumn } from '../lists/task-columns';
+import { addressOfTask, wayToOpen } from '../modules/task-address';
 import { pathOfTask } from '../router/screens';
 import { currentUser } from '../session/session';
 import DateCell from './DateCell.vue';

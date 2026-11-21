@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { CONTROL_PATH_PREFIX, handleControl } from './control.ts';
 import { GUI_API_BASE_PATH, handleGuiApi } from './gui-api.ts';
 import { cookiesOf, sendNothing } from './http.ts';
+import { handleModuleFile, MODULE_PATH_PREFIX } from './modules.ts';
 import { handleLoginPath, isLoginPath, SESSION_COOKIE, sendToLogin } from './login.ts';
 import { Simulator } from './state.ts';
 import { isBundleFile, sendBundleFile, sendShell } from './static-files.ts';
@@ -36,6 +37,11 @@ async function answer(simulator: Simulator, request: IncomingMessage, response: 
     return;
   }
 
+  if (path.startsWith(MODULE_PATH_PREFIX)) {
+    const isLoggedIn = simulator.userOfSession(cookiesOf(request)[SESSION_COOKIE]) !== undefined;
+    if (!isLoggedIn) return sendNothing(response, 401);
+    return handleModuleFile(simulator, request, response, path);
+  }
   if (isBundleFile(path)) return sendBundleFile(response, path);
   // Like the backend, the simulator does not take a request for an icon as the page the user wanted.
   if (path === '/favicon.ico') return sendNothing(response, 404);

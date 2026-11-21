@@ -80,3 +80,19 @@ Default taken: DOM nodes and event listeners are compared with the values before
 Why this default: the heap before the first visit lacks the code the browser compiles for the list (4.4 MB before, 7.0 MB after, the same on every later visit). No row owns it, so it cannot be freed.
 Answer: open
 
+
+## ASK-011 What does the page of a task do for an EXTERNAL task that is opened by its address and not from the list?
+
+Story: S08
+Date: 2026-11-21
+Default taken: the page reads the task and shows a note with a link "Open in a new tab" (target `_blank`). It does not call `window.open`, because a browser blocks a tab that no click opened. From the list, the title of an EXTERNAL task is that link itself.
+Why this default: TF-019 only describes the list; a script cannot open a tab without a click.
+Answer: open
+
+## ASK-012 Which Angular version do the test modules use?
+
+Story: S08
+Date: 2026-11-21
+Default taken: Angular 22.2.7 with TypeScript 6.0.3 inside the Angular module (the other workspaces keep TypeScript 5.9.3), the version the description measured. React 19.3.1 and Vue 3.5.46.
+Why this default: Angular 22 needs TypeScript 6.0, the rest of the repository stays where it is; npm installs the two next to each other.
+Answer: open
