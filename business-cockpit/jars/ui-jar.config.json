@@ -1,0 +1,9 @@
+{
+  "groupId": "com.example.cockpit",
+  "artifactId": "business-cockpit-ui",
+  "description": "The Business Cockpit user interface, served from the class path of the backend",
+  "folderInJar": "static",
+  "mavenRepositoryUrlVariable": "MAVEN_REPOSITORY_URL",
+  "mavenRepositoryUsernameVariable": "MAVEN_REPOSITORY_USERNAME",
+  "mavenRepositoryPasswordVariable": "MAVEN_REPOSITORY_PASSWORD"
+}

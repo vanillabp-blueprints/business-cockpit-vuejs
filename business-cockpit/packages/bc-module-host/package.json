@@ -1,0 +1,15 @@
+{
+  "name": "@example/bc-module-host",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "The cockpit's side of loading workflow module parts; the registry and the loader are not built yet",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": { "build": "tsc" },
+  "dependencies": { "@example/bc-module-kit": "0.1.0-SNAPSHOT" },
+  "devDependencies": { "typescript": "5.9.3" }
+}

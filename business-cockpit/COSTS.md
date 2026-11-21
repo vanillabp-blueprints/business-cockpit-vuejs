@@ -5,3 +5,4 @@ Token and cost columns are filled from the output of `/cost` that the user hands
 | Story | # Messages | Input tokens | Cache write | Cache read | Output tokens | Est. cost USD |
 |-------|------------|--------------|-------------|------------|---------------|---------------|
 | Interview + plan | - | - | - | - | - | - |
+| S01 | - | - | - | - | - | - |

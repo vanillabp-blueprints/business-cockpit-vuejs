@@ -1,0 +1,4 @@
+/* Vuetify sets its own font; the cockpit takes the one of the theme. */
+.v-application {
+  font-family: var(--bc-font-family);
+}

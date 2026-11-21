@@ -1,0 +1,32 @@
+{
+  "name": "business-cockpit-ui-root",
+  "version": "0.1.0-SNAPSHOT",
+  "private": true,
+  "description": "The Business Cockpit user interface of com.example.cockpit, one npm workspaces repository",
+  "engines": { "node": ">=24" },
+  "workspaces": [
+    "packages/bc-types",
+    "packages/bc-module-kit",
+    "packages/bc-module-host",
+    "packages/bc-theme",
+    "packages/ui",
+    "packages/bc-dev-shell-*",
+    "e2e/compare"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace packages/ui",
+    "fetch:openapi": "node scripts/fetch-openapi.mjs",
+    "prebuild": "npm run fetch:openapi",
+    "build": "npm run build --workspaces --if-present && npm run build:jars && npm run install:jars",
+    "build:jars": "node jars/build-jars.mjs",
+    "install:jars": "node jars/install-jars.mjs",
+    "publish:jars": "node jars/publish-jars.mjs",
+    "set-version": "node scripts/set-version.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "test:workspaces": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "fflate": "0.8.3",
+    "yazl": "3.3.1"
+  }
+}

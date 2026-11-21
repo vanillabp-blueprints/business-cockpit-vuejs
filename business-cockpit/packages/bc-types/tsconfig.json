@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  // The generated index re-exports without file extensions, which Node ESM would not resolve; src/index.ts exports the types file itself.
+  "exclude": ["src/generated/*/index.ts"]
+}

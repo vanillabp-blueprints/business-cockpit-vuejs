@@ -1,0 +1,21 @@
+{
+  "name": "@example/bc-theme",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "The look of the cockpit: colours, fonts, logo and spacing from the VanillaBP design system, as CSS custom properties and as plain values",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./bc-theme.css": "./dist/bc-theme.css",
+    "./logo/*": "./dist/logo/*"
+  },
+  "files": ["dist"],
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "build": "tsc && node scripts/build-css.mjs",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "devDependencies": { "typescript": "5.9.3" }
+}

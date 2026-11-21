@@ -1,0 +1,25 @@
+{
+  "name": "@example/bc-types",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "The data of the GUI API, the contract between the cockpit and the parts of workflow modules, and its constants",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./ui-uri-types.json": "./ui-uri-types.json"
+  },
+  "files": ["dist", "ui-uri-types.json"],
+  "sideEffects": false,
+  "scripts": {
+    "generate": "openapi-ts",
+    "prebuild": "npm run generate",
+    "build": "tsc",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "0.99.0",
+    "typescript": "5.9.3"
+  }
+}
