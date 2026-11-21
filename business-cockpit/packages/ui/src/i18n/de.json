@@ -1,0 +1,21 @@
+{
+  "language.name": "Deutsch",
+  "header.openMenu": "Menü öffnen",
+  "header.versionInfo": "Version {version}, erstellt am {builtOn}",
+  "lists.myTasks": "Meine Aufgaben",
+  "lists.allTasks": "Alle Aufgaben",
+  "lists.cases": "Fälle",
+  "menu.language": "Sprache",
+  "menu.logout": "Abmelden",
+  "user.id": "Benutzerkennung",
+  "rights.title": "Rollen und Rechte",
+  "rights.explanation": "Die Organisation gibt Ihnen Rollen. Rechte bestimmen, was Sie in einer Anwendung tun dürfen. Jede Anwendung legt ihre eigenen Rechte fest und leitet sie aus Ihren Rollen ab.",
+  "rights.loading": "Lädt …",
+  "rights.nothingKnown": "Es sind keine Rollen oder Rechte bekannt.",
+  "rights.column.name": "Name",
+  "rights.column.kind": "Art",
+  "rights.column.givenBy": "Vergeben durch",
+  "rights.kind.role": "Rolle",
+  "rights.kind.right": "Recht",
+  "rights.givenBy.organisation": "Organisation"
+}

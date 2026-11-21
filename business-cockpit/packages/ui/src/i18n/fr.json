@@ -1,0 +1,21 @@
+{
+  "language.name": "Français",
+  "header.openMenu": "Ouvrir le menu",
+  "header.versionInfo": "Version {version}, créée le {builtOn}",
+  "lists.myTasks": "Mes tâches",
+  "lists.allTasks": "Toutes les tâches",
+  "lists.cases": "Dossiers",
+  "menu.language": "Langue",
+  "menu.logout": "Se déconnecter",
+  "user.id": "Identifiant",
+  "rights.title": "Rôles et droits",
+  "rights.explanation": "L'organisation vous attribue des rôles. Les droits déterminent ce que vous pouvez faire dans une application. Chaque application définit ses propres droits et les déduit de vos rôles.",
+  "rights.loading": "Chargement …",
+  "rights.nothingKnown": "Aucun rôle ni droit n'est connu.",
+  "rights.column.name": "Nom",
+  "rights.column.kind": "Type",
+  "rights.column.givenBy": "Attribué par",
+  "rights.kind.role": "Rôle",
+  "rights.kind.right": "Droit",
+  "rights.givenBy.organisation": "Organisation"
+}

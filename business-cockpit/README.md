@@ -15,6 +15,7 @@ The repository needs Node 24 or newer and no Java, Maven or Gradle.
 | `packages/bc-module-host` | `@example/bc-module-host`: the cockpit's side of loading module parts (not built yet) |
 | `packages/bc-theme` | `@example/bc-theme`: colours, fonts, logo and spacing as CSS custom properties and plain values |
 | `packages/ui` | the user interface |
+| `e2e/simulator`, `e2e/tests` | the simulator that stands in for the backend, and the Playwright tests |
 | `e2e/compare` | the tests that compare a part in the cockpit and in a dev shell (nothing to compare yet) |
 | `scripts/` | loading the OpenAPI files, setting one version everywhere |
 | `jars/` | building, installing and uploading the UI jar |
@@ -84,7 +85,19 @@ needed for a separate deployment. When it exists, it is built with
 
 ## End-to-end tests
 
-Not generated yet. They use Playwright, one test per checklist item, with the test title starting
-with the id of the item, for example `TL-003 each primary filter shows its count`. They run with
-`npm run test:e2e` against the simulator of this repository once the stories that bring them are
-done.
+They use Playwright, one test per checklist item, with the test title starting with the id of the
+item, for example `TL-003 each primary filter shows its count`. They run against the simulator in
+`e2e/simulator/`, which stands in for the backend: it serves the built user interface, plays the
+login and answers the GUI API in memory. The tests need Node and a browser, no Java.
+
+```bash
+npm run test:e2e        # builds the user interface, starts the simulator, runs the tests
+npm run typecheck:e2e   # types of the simulator and the tests
+```
+
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` names a Chromium that is already installed; without it,
+Playwright uses its own browser (`npx playwright install chromium`). The simulator listens on port
+8090 (`SIMULATOR_PORT`). A test changes it through `/simulator/*`, see `e2e/support/test.ts`.
+
+The texts of the user interface are in `packages/ui/src/i18n/<language>.json`. `npm run build`
+fails when a file misses a key of `de.json`, and names the file and the key.

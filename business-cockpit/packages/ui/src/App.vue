@@ -1,17 +1,23 @@
 <template>
   <v-app>
-    <v-main class="d-flex align-center justify-center">
-      <img :src="logoUrl" alt="VanillaBP" class="shell-logo" />
-    </v-main>
+    <!-- Nothing is drawn before the backend has said who is logged in. -->
+    <template v-if="currentUser">
+      <app-header @open-menu="isMenuOpen = true" />
+      <navigation-menu v-model="isMenuOpen" />
+      <v-main />
+    </template>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import logoUrl from '@example/bc-theme/logo/vanillabp-logo-light.svg';
-</script>
+import { ref, watchEffect } from 'vue';
+import AppHeader from './components/AppHeader.vue';
+import NavigationMenu from './components/NavigationMenu.vue';
+import { appInformation, currentUser } from './session/session';
 
-<style>
-.shell-logo {
-  max-width: 16rem;
-}
-</style>
+const isMenuOpen = ref(false);
+
+watchEffect(() => {
+  if (appInformation.value) document.title = appInformation.value.titleLong;
+});
+</script>

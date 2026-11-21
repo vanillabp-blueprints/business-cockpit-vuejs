@@ -7,7 +7,7 @@
   "engines": { "node": ">=24" },
   "scripts": {
     "generate": "openapi-ts",
-    "prebuild": "npm run generate",
+    "prebuild": "npm run generate && node ../../scripts/check-texts.mjs",
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
     "test": "vitest run"

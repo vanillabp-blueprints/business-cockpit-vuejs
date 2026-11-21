@@ -1,0 +1,21 @@
+{
+  "language.name": "English",
+  "header.openMenu": "Open menu",
+  "header.versionInfo": "Version {version}, built on {builtOn}",
+  "lists.myTasks": "My tasks",
+  "lists.allTasks": "All tasks",
+  "lists.cases": "Cases",
+  "menu.language": "Language",
+  "menu.logout": "Log out",
+  "user.id": "User id",
+  "rights.title": "Roles and rights",
+  "rights.explanation": "The organisation gives you roles. Rights decide what you may do in an application. Each application defines its own rights and derives them from your roles.",
+  "rights.loading": "Loading …",
+  "rights.nothingKnown": "No roles or rights are known.",
+  "rights.column.name": "Name",
+  "rights.column.kind": "Kind",
+  "rights.column.givenBy": "Given by",
+  "rights.kind.role": "Role",
+  "rights.kind.right": "Right",
+  "rights.givenBy.organisation": "Organisation"
+}
