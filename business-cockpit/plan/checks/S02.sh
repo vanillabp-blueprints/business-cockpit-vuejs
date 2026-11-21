@@ -1,0 +1,5 @@
+#!/bin/sh
+# ids: PKG-004 PKG-005 BE-001 BE-002 BE-003 BE-005 BE-006 BE-007 BE-008 BE-010 BE-011 BE-012 BE-013 BE-014 BE-017 BE-018 BE-019 BE-020 BE-024 BE-025 BE-027 BE-028 BE-031
+set -e
+cd ../business-cockpit-backend
+mvn -B verify
